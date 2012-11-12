@@ -1,12 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+    <resource-ref>
+        <description>Item Connection</description>
+        <res-ref-name>jdbc/cas_items</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+    </resource-ref>
     <servlet>
         <servlet-name>ClientServlet</servlet-name>
-        <servlet-class>servlets.ClientServlet</servlet-class>
+        <servlet-class>servlets.OrderSearchServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddItem</servlet-name>
+        <servlet-class>servlets.AddItem</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ShoppingPage</servlet-name>
+        <servlet-class>servlets.ShoppingPage</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddToCart</servlet-name>
+        <servlet-class>servlets.AddToCart</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddClient</servlet-name>
+        <servlet-class>servlets.AddClient</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Shopping</servlet-name>
+        <servlet-class>servlets.Shopping</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PlaceOrder</servlet-name>
+        <servlet-class>servlets.PlaceOrder</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ClientServlet</servlet-name>
         <url-pattern>/ClientServlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>ListItems</servlet-name>
+        <servlet-class>servlets.ListItems</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ListItems</servlet-name>
+        <url-pattern>/ListItems</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddItem</servlet-name>
+        <url-pattern>/AddItem</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShoppingPage</servlet-name>
+        <url-pattern>/ShoppingPage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddToCart</servlet-name>
+        <url-pattern>/AddToCart</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddClient</servlet-name>
+        <url-pattern>/AddClient</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Shopping</servlet-name>
+        <url-pattern>/Shopping</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PlaceOrder</servlet-name>
+        <url-pattern>/PlaceOrder</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

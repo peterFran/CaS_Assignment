@@ -4,9 +4,14 @@
  */
 package servlets;
 
+import cart.Order;
+import dataAccess.OrderDAO;
+import dataAccess.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,7 +20,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author petermeckiffe
  */
-public class ClientServlet extends HttpServlet {
+@WebServlet(name = "GetOrders", urlPatterns = {"/GetOrders"})
+public class GetOrders extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -35,10 +41,10 @@ public class ClientServlet extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ClientServlet</title>");            
+            out.println("<title>Servlet GetOrders</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ClientServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet GetOrders at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {            
@@ -59,7 +65,19 @@ public class ClientServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        OrderDAO dao = new OrderDAO();
+        UserDAO userDao = new UserDAO();
+        String id = request.getParameter("id");
+        if(id!=null){
+            int userID = Integer.parseInt(id);
+            request.setAttribute("client", userDao.getUser(userID));
+            List<Order> orders = dao.retrieveCustomerOrders(userID);
+            request.setAttribute("orders", orders);
+            
+        }
+        request.setAttribute("clients", userDao.getUsers());
+        request.getRequestDispatcher(
+        "WEB-INF/orderOps.jsp").forward(request,response);
     }
 
     /**

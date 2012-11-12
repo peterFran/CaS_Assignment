@@ -4,35 +4,104 @@
  */
 package cart;
 
-import java.util.List;
-import java.sql.*;
+import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
-import transaction.Transaction;
+import java.util.Date;
+import java.util.List;
 
 /**
  *
  * @author petermeckiffe
  */
-public class ShoppingCart {
-    private List<Item> items;
-    private double cost;
-    private Connection conn;
-    public ShoppingCart(Connection conn){
-        this.conn = conn;
-        items = new ArrayList<Item>();
+public class ShoppingCart implements Serializable{
+    private List<CustomerItem> items;
+    private int userID;
+    private Date dateCreated;
+    private boolean checked=false;
+    public ShoppingCart(int userID){
+        this.dateCreated = new Date();
+        this.userID = userID;
+        items = new ArrayList<CustomerItem>();
     }
-    public Transaction addItem(Item item){
-        Transaction tran;
-        return tran;
+    public int getUserID(){
+        return this.userID;
     }
-    public Transaction removeItem(Item item){
-        this.items.add(item);
-        this.cost+=item
+    public ShoppingCart(int userID, List<CustomerItem> items, Date date){
+        this.dateCreated = date;
+        this.userID = userID;
+        this.items = items;
+        this.checked = true;
     }
-    public List<Item> getItemList(){
+    public int[] getIDs(){
+        int[] itemIds = new int[this.items.size()];
+        int count = 0;
+        for(Item item:this.items){
+            itemIds[count]=item.getID();
+            count++;
+        }
+        return itemIds;
+    }
+    public boolean getChecked(){
+        return this.checked;
+    }
+    public void addItem(Item item, int quantity){
+        System.out.println("AH");
+        CustomerItem custItem = this.getCustomerItem(item.getID());
+        if(custItem == null){
+            this.items.add(new CustomerItem(item, quantity));
+        }else{
+            custItem.setQuantity(quantity+custItem.getQuantity());
+        }
+    }
+    public void addItem(Item item){
+        CustomerItem custItem = this.getCustomerItem(item.getID());
+        if(custItem == null){
+            this.items.add(new CustomerItem(item));
+        }else{
+            custItem.increment();
+        }
+    }
+    public void decrementItem(Item item){
+        CustomerItem custItem = this.getCustomerItem(item.getID());
+        if(custItem != null){
+            custItem.decrement();
+        }
+    }
+    private CustomerItem getCustomerItem(int itemID){
+        for(CustomerItem custItem:this.items){
+            if(custItem.getID()==itemID){
+                return custItem;
+            }
+        }
+        return null;
+    }
+    public void removeItem(Item item){
+        CustomerItem custItem = this.getCustomerItem(item.getID());
+        if(custItem != null){
+            this.items.remove(custItem);
+        } 
+    }
+    public Date getDateCreated(){
+        return this.dateCreated;
+    }
+    
+    public List<CustomerItem> getItemList(){
         return this.items;
     }
-    public double getTotalCost(){
+    public BigDecimal getTotalCost(){
+        BigDecimal cost = new BigDecimal(0);
+        for(CustomerItem i:items){
+            cost = cost.add(i.getPrice().multiply(new BigDecimal(i.getQuantity())));
+        }
         return cost;
+    }
+    @Override
+    public String toString(){
+        String string = "";
+        for(CustomerItem a:this.items){
+            string += a;
+        }
+        return string;
     }
 }
