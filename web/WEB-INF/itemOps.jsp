@@ -51,6 +51,13 @@
                         <label><h4>${item.getName()}</h4></label>
                         <label>ID: ${item.getID()}</label>
                         <label>Price: £${item.getPrice()}</label>
+                        <form method="post" action="ChangeItemPrice">
+	                        <fieldset>
+	                        	<input hidden="true" name="itemId" value="${item.getID()}">
+		                        <span>Change price: £<input name="price" type="number" step="0.01" placeholder="Price"></span>
+		                        <button type="submit" class="btn">Submit</button>
+	                        </fieldset>
+                        </form>
                     </div>
                 </c:forEach>
                 </div>

@@ -34,6 +34,26 @@
         <servlet-name>PlaceOrder</servlet-name>
         <servlet-class>servlets.PlaceOrder</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ClearCart</servlet-name>
+        <servlet-class>servlets.ClearCart</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RemoveItems</servlet-name>
+        <servlet-class>servlets.RemoveItems</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ChangeItemPrice</servlet-name>
+        <servlet-class>servlets.ChangeItemPrice</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ListCarts</servlet-name>
+        <servlet-class>servlets.ListCarts</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RemoveUser</servlet-name>
+        <servlet-class>servlets.RemoveUser</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ClientServlet</servlet-name>
         <url-pattern>/ClientServlet</url-pattern>
@@ -69,6 +89,26 @@
     <servlet-mapping>
         <servlet-name>PlaceOrder</servlet-name>
         <url-pattern>/PlaceOrder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ClearCart</servlet-name>
+        <url-pattern>/ClearCart</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RemoveItems</servlet-name>
+        <url-pattern>/RemoveItems</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangeItemPrice</servlet-name>
+        <url-pattern>/ChangeItemPrice</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListCarts</servlet-name>
+        <url-pattern>/ListCarts</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RemoveUser</servlet-name>
+        <url-pattern>/RemoveUser</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

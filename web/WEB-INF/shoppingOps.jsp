@@ -61,6 +61,12 @@
                                     <label>Subtotal: £${cart.getTotalCost()}</label><br/>
 
                                 </ul>
+                                <form method="post" action="PlaceOrder">
+                                    <button type="submit" class="btn">Check Out Order</button>
+                                </form>
+                                <form method="post" action="ClearCart">
+                                    <button type="submit" class="btn">Clear Cart</button>
+                                </form>
                             </div><!--/.well -->
                         </div><!--/span-->
                         <div class="span9">
@@ -82,9 +88,7 @@
                                     </c:forEach>
                                 </fieldset>
 
-                                <form method="post" action="PlaceOrder">
-                                    <button type="submit" class="btn">Check Out Order</button>
-                                </form>
+                                
                             </div>
 
                         </div><!--/span-->

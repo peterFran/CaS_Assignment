@@ -12,15 +12,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.Iterator;
 import java.util.List;
-
 
 /**
  *
  * @author petermeckiffe
  */
-public class OrderDAO extends DAO{
+public class OrderDAO extends DAO {
 
     private ItemDAO itemDao;
 
@@ -35,22 +35,35 @@ public class OrderDAO extends DAO{
         ResultSet rs = null;
         try {
             state = this.conn.createStatement();
-            rs = state.executeQuery("SELECT item_id, quantity from CaS_Orders.items_in_order WHERE order_id='" + orderID + "'");
+            rs = state.executeQuery("SELECT item_id, quantity from CaS_Orders.items_in_orders WHERE order_id='" + orderID + "'");
             while (rs.next()) {
-                items.add(new CustomerItem(this.itemDao.getItem(rs.getInt(1)),rs.getInt(2)));
+                int id = rs.getInt("item_id");
+                int q = rs.getInt("quantity");
+                System.out.println(id);
+                System.out.println(q);
+                items.add(new CustomerItem(this.itemDao.getItem(id), q));
             }
-            
             rs = state.executeQuery("SELECT user_id, item_hash, date_created ,total_cost from CaS_Orders.orders WHERE order_id='" + orderID + "'");
-            if(items.hashCode()!=rs.getInt(3)){
-                System.out.println("Error: Hash Codes do not match");
+//            if(rs.next() && (items.hashCode() != rs.getInt(3))){
+//                System.out.println("Error: Hash Codes do not match");
+//            } else {
+//                System.out.println("They match");
+//            }
+            if(rs.next()){
+                return new Order(orderID, rs.getInt("user_id"), items, rs.getInt("item_hash"), rs.getTimestamp("date_created"), rs.getBigDecimal("total_cost"));
+            } else{
+                return null;
+                      
             }
-            return new Order(orderID, rs.getInt("user_id"), items, rs.getInt("item_hash"),rs.getDate("date_created"),rs.getBigDecimal("total_cost"));
         } catch (SQLException a) {
+            System.out.println(a);
             return null;
-        } finally{
+        } finally {
             this.closeConns(state, rs, null);
         }
     }
+    
+    
 
     public List<Order> retrieveCustomerOrders(int userID) {
         List<Order> orders = new ArrayList<Order>();
@@ -64,72 +77,103 @@ public class OrderDAO extends DAO{
             }
             return orders;
         } catch (SQLException a) {
+            System.out.println(a);
+            System.out.println("it");
             return null;
-        } finally{
+        } finally {
             this.closeConns(state, rs, null);
         }
     }
-    public List<Order> retrieveCustomerOrdersWithContentsHash(int userID, int itemHash){
+
+    public List<Order> retrieveCustomerOrders() {
         List<Order> orders = new ArrayList<Order>();
         Statement state = null;
         ResultSet rs = null;
         try {
             state = this.conn.createStatement();
-            rs = state.executeQuery("SELECT order_id from CaS_Orders.orders WHERE user_id='" + userID + "' AND item_hash='"+itemHash+"'");
+            rs = state.executeQuery("SELECT order_id from CaS_Orders.orders");
+            while (rs.next()) {
+                System.out.println(rs.getInt("order_id"));
+                orders.add(this.retrieveOrder(rs.getInt(1)));
+            }
+            return orders;
+        } catch (SQLException a) {
+            System.out.println(a);
+            return null;
+        } finally {
+            this.closeConns(state, rs, null);
+        }
+    }
+
+    public List<Order> retrieveCustomerOrdersWithContentsHash(int userID, int itemHash) {
+        List<Order> orders = new ArrayList<Order>();
+        Statement state = null;
+        ResultSet rs = null;
+        try {
+            state = this.conn.createStatement();
+            rs = state.executeQuery("SELECT order_id from CaS_Orders.orders WHERE user_id='" + userID + "' AND item_hash='" + itemHash + "'");
             while (rs.next()) {
                 orders.add(this.retrieveOrder(rs.getInt("order_id")));
             }
             return orders;
         } catch (SQLException a) {
             return null;
-        }  finally{
+        } finally {
             this.closeConns(state, rs, null);
         }
     }
-    public Order retrieveCustomerOrdersWithContentsHash(int userID, Date dateCreated){
+
+    public int retrieveCustomerOrderIDWithTimestamp(int userID, Timestamp dateCreated) {
         List<Order> orders = new ArrayList<Order>();
         Statement state = null;
         ResultSet rs = null;
         try {
             state = this.conn.createStatement();
-            rs = state.executeQuery("SELECT order_id from CaS_Orders.orders WHERE user_id='" + userID + "' AND date_created='"+dateCreated+"'");
+            System.out.println(userID);
+            System.out.println(dateCreated);
+            rs = state.executeQuery("SELECT order_id from CaS_Orders.orders WHERE user_id='" + userID + "' AND date_created='" + dateCreated + "'");
             if (rs.next()) {
-                return this.retrieveOrder(rs.getInt("order_id"));
+                return rs.getInt("order_id");
             }
-            return null;
+            return -1;
         } catch (SQLException a) {
-            return null;
-        } finally{
+            System.out.println(a);
+            return -1;
+        } finally {
             this.closeConns(state, rs, null);
         }
     }
+
     public Order placeOrder(ShoppingCart cart) {
         Statement state = null;
         ResultSet rs = null;
         try {
             state = this.conn.createStatement();
             int hash = cart.getItemList().hashCode();
-            rs = state.executeQuery("Select order_id from Cas_Orders.orders WHERE user_id='"+cart.getUserID()+"' AND date_created='"+cart.getDateCreated()+"'");
-            if(rs.next()){
-                return this.retrieveOrder(rs.getInt("user_id"));
-            }
-            int code = state.executeUpdate("Insert into Cas_Orders.orders (user_id, total_cost,item_hash, date_created) values('" + cart.getUserID() + "','" +cart.getTotalCost()+"','"+hash+"','"+cart.getDateCreated()+"')");
             
-            int orderID = rs.getInt(2);
-            
-            for(Item item:cart.getItemList()){
-                state.executeQuery("Insert into Cas_Orders.items_in_orders (order_id, item_id) values('" + cart.getUserID() + "','"+item.getID()+"')");
+            int orderID = this.retrieveCustomerOrderIDWithTimestamp(cart.getUserID(), cart.getTimeCreated());
+            if (orderID!=-1) {
+                return this.retrieveOrder(orderID);
             }
-            return new Order(orderID,cart.getUserID(),cart.getItemList(),hash,cart.getDateCreated(),cart.getTotalCost());
+            
+            int code = state.executeUpdate("Insert into Cas_Orders.orders (user_id, total_cost,item_hash, date_created) values('" + cart.getUserID() + "','" + cart.getTotalCost() + "','" + hash + "','" + cart.getTimeCreated() + "')");
+            System.out.println(code);
+            orderID = this.retrieveCustomerOrderIDWithTimestamp(cart.getUserID(), cart.getTimeCreated());
+            System.out.println("ID:"+orderID);
+            for (Iterator<CustomerItem> it = cart.getItemList().iterator(); it.hasNext();) {
+                CustomerItem item = it.next();
+                state.executeUpdate("Insert into Cas_Orders.items_in_orders (order_id, item_id, quantity) values('" + orderID + "','" + item.getID() + "','"+item.getQuantity()+"')");
+            }
+            
+            return new Order(orderID, cart.getUserID(), cart.getItemList(), hash, cart.getTimeCreated(), cart.getTotalCost());
             //TODO CHANGE
 
         } catch (SQLException a) {
             System.out.println(a.toString());
-            
+
             return null;
-        } finally{
+        } finally {
             this.closeConns(state, rs, null);
         }
     }
-    
 }

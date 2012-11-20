@@ -36,8 +36,8 @@ public class UserDAO extends DAO{
         }
     }
     public User getUser(int ID) {
-        Statement state;
-        ResultSet rs;
+        Statement state = null;
+        ResultSet rs = null;
         try {
             state = this.conn.createStatement();
             rs = state.executeQuery("SELECT firstname,lastname from CaS_Users.users WHERE user_id='" + ID + "'");
@@ -48,11 +48,26 @@ public class UserDAO extends DAO{
             }
         } catch (SQLException a) {
             return null;
+        } finally{
+            this.closeConns(state, rs, null);
+        }
+    }
+    public boolean removeUser(int ID) {
+        Statement state = null;
+        try {
+            state = this.conn.createStatement();
+            int code = state.executeUpdate("delete from CaS_Users.users WHERE user_id='" + ID + "'");
+            return true;
+        } catch (SQLException a) {
+            System.out.println(a);
+            return false;
+        } finally{
+            this.closeConns(state, null, null);
         }
     }
     public User getUser(String firstname, String lastname) {
-        Statement state;
-        ResultSet rs;
+        Statement state =null;
+        ResultSet rs = null;
         try {
             state = this.conn.createStatement();
             rs = state.executeQuery("SELECT user_id from CaS_Users.users WHERE firstname='" + firstname+"' AND lastname='"+lastname+"'");
@@ -62,12 +77,14 @@ public class UserDAO extends DAO{
             return null;
         } catch (SQLException a) {
             return null;
+        } finally{
+            this.closeConns(state, rs, null);
         }
     }
     public List<User> getUsers() {
         List<User> users = new ArrayList<User>();
-        Statement state;
-        ResultSet rs;
+        Statement state = null;
+        ResultSet rs = null;
         try {
             state = this.conn.createStatement();
             rs = state.executeQuery("SELECT user_id from CaS_Users.users");
@@ -78,6 +95,8 @@ public class UserDAO extends DAO{
             
         } catch (SQLException a) {
             return null;
+        } finally{
+            this.closeConns(state, rs, null);
         }
     }
 }

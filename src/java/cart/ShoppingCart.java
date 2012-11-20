@@ -6,6 +6,7 @@ package cart;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,8 +20,10 @@ public class ShoppingCart implements Serializable{
     private int userID;
     private Date dateCreated;
     private boolean checked=false;
+    private Timestamp stamp;
     public ShoppingCart(int userID){
         this.dateCreated = new Date();
+        this.stamp = new Timestamp(this.dateCreated.getTime());
         this.userID = userID;
         items = new ArrayList<CustomerItem>();
     }
@@ -46,12 +49,13 @@ public class ShoppingCart implements Serializable{
         return this.checked;
     }
     public void addItem(Item item, int quantity){
-        System.out.println("AH");
+        System.out.println("got");
         CustomerItem custItem = this.getCustomerItem(item.getID());
+        
         if(custItem == null){
             this.items.add(new CustomerItem(item, quantity));
         }else{
-            custItem.setQuantity(quantity+custItem.getQuantity());
+            custItem.setQuantity(quantity);
         }
     }
     public void addItem(Item item){
@@ -84,6 +88,9 @@ public class ShoppingCart implements Serializable{
     }
     public Date getDateCreated(){
         return this.dateCreated;
+    }
+    public Timestamp getTimeCreated(){
+        return this.stamp;
     }
     
     public List<CustomerItem> getItemList(){

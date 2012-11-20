@@ -41,13 +41,13 @@ public class GetOrders extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet GetOrders</title>");            
+            out.println("<title>Servlet GetOrders</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet GetOrders at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
-        } finally {            
+        } finally {
             out.close();
         }
     }
@@ -65,19 +65,23 @@ public class GetOrders extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String id = request.getParameter("client");
         OrderDAO dao = new OrderDAO();
         UserDAO userDao = new UserDAO();
-        String id = request.getParameter("id");
-        if(id!=null){
+        List<Order> orders = null;
+        if (id != null) {
             int userID = Integer.parseInt(id);
-            request.setAttribute("client", userDao.getUser(userID));
-            List<Order> orders = dao.retrieveCustomerOrders(userID);
-            request.setAttribute("orders", orders);
+            orders = dao.retrieveCustomerOrders(userID);
             
+
+        } else{
+            orders = dao.retrieveCustomerOrders();
+            System.out.println(orders.get(0).getOrderID());
         }
+        request.setAttribute("orders", orders);
         request.setAttribute("clients", userDao.getUsers());
         request.getRequestDispatcher(
-        "WEB-INF/orderOps.jsp").forward(request,response);
+                "WEB-INF/orderOps.jsp").forward(request, response);
     }
 
     /**

@@ -5,6 +5,7 @@
 package cart;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -19,11 +20,12 @@ public class Order {
     private Date datePlaced;
     private int itemHash;
     private BigDecimal price;
-    public Order(int orderID, int userID, List<CustomerItem> items, int hash, Date date, BigDecimal price){
+    private Timestamp stamp;
+    public Order(int orderID, int userID, List<CustomerItem> items, int hash, Timestamp stamp, BigDecimal price){
         this.orderID = orderID;
         this.items = items;
         this.userID = userID;
-        this.datePlaced = date;
+        this.stamp = stamp;
         this.price = price;
         this.itemHash = hash;
     }
@@ -35,6 +37,9 @@ public class Order {
     }
     public int getUserID(){
         return this.userID;
+    }
+    public Timestamp getTimestamp(){
+        return this.stamp;
     }
     public List<CustomerItem> getItems(){
         return this.items;

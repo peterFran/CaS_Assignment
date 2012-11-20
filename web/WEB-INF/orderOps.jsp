@@ -12,41 +12,49 @@
 <!DOCTYPE html>
 <html>
     <head>
-    	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css" />
-    	<link rel="stylesheet" type="text/css" href="datepicker/css/datepicker.css" />
-    	<script type="text/javascript" src="datepicker/js/datepicker.js"></script>
+        <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css" />
+        <link rel="stylesheet" type="text/css" href="datepicker/css/datepicker.css" />
+        <script type="text/javascript" src="datepicker/js/datepicker.js"></script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Orders</title>
     </head>
     <body>
         <div class="navbar">
-		  <div class="navbar-inner tabbable">
-		    <a class="brand" href="index.jsp">CaS Assignment</a>
-		    <ul class="nav nav-tabs">
-		      <li><a href="ListClients" data-toggle="tab">Users</a></li>
-		      <li><a href="Shopping" data-toggle="tab">Shopping</a></li>
-		      <li class="active"><a href="GetOrders" data-toggle="tab">Orders</a></li>
-		      <li><a href="ListItems" data-toggle="tab">Items</a></li>
-		    </ul>
+            <div class="navbar-inner tabbable">
+                <a class="brand" href="index.jsp">CaS Assignment</a>
+                <ul class="nav nav-tabs">
+                    <li><a href="ListClients" data-toggle="tab">Users</a></li>
+                    <li><a href="Shopping" data-toggle="tab">Shopping</a></li>
+                    <li class="active"><a href="GetOrders" data-toggle="tab">Orders</a></li>
+                    <li><a href="ListItems" data-toggle="tab">Items</a></li>
+                </ul>
+                <form class="navbar-form pull-right" method="get" action="GetOrders">
+                    <select id="cartSelect" name="client">
+                        <c:forEach items="${clients}" var="cl">
+                            <option value="${cl.getID()}">${cl.getFirstName()} ${cl.getLastName()}</option>
+                        </c:forEach>
+                    </select>
+                    <button type="submit" class="btn">Get orders</button>
+                </form>
+            </div>
+        </div>
+        <div class="container">
+            <div class="hero-unit">
+                <c:forEach items="${orders}" var="order">
+                    <label>Order ID: ${order.getOrderID()}</label>
+                    <label>Order cost: ${order.getPrice()}</label>
+                    <label>Client: ${order.getUserID()}</label>
+                    <label>Items: </label>
 
-		  </div>
-		</div>
-		<div class="container">
-		  <div class="hero-unit">
-			<form>
-			  <fieldset>
-			    <legend>Find orders by user</legend>
-			    <div class="well">
-			    	<select id="cartSelect">
-                                    <c:forEach items="${clients}" var="cl">
-                                        <option value="${cl.getID()}">${cl.getFirstName()} ${cl.getLastName()}</option>
-                                    </c:forEach>
-		            </select>
-			    </div>
-			    <button type="submit" class="btn">Submit</button>
-			  </fieldset>
-			</form>
-		  </div>
-		</div>
+                    <c:forEach items="${order.getItems()}" var="item">
+                        <div class="well">
+                            <label>Item name: ${item.getName()}</label>
+                            <label>Quantity: ${item.getQuantity()}</label>
+                            <label>Cost: ${item.getPrice()}</label>
+                        </div>
+                    </c:forEach>
+                </c:forEach>
+            </div>
+        </div>
     </body>
 </html>

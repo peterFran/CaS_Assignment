@@ -30,17 +30,44 @@
             </div>
         </div>
         <div class="container">
-            <div class="hero-unit">
-            	
-                <legend>Users</legend>
-                
-                <c:forEach var="user" items="${users}">
-                    <div class="well">
-                        <label>Name: ${user.getFirstName()} ${user.getLastName()}</label>
-                        <label>ID: ${user.getID()}</label>
-                        <a href="GetOrders?id=${user.getID()}"><button type="button" class="btn">Show Customer Orders</button></a>
+            <div class="container">
+                <div class="row-fluid">
+                    <div class="span4">
+                        <div class="well sidebar-nav">
+                            <li class="nav-header">Add Client</li>
+                            <form action="AddClient" method="post">
+                                <fieldset>
+
+                                    <span>First Name
+                                        <input type="text" name="first" placeholder="First name"></span><br/>
+                                    <span>Last Name
+                                        <input type="text" name="last" placeholder="Last name"></span><br/>
+                                    <button type="submit" class="btn">Submit</button>
+                                </fieldset>
+                            </form>
+                        </div>
+
                     </div>
-                </c:forEach>
+
+                    <div class="span8">
+                        <div class="hero-unit">
+
+                            <legend>Users</legend>
+
+                            <c:forEach var="user" items="${users}">
+                                <div class="well">
+                                    <label>Name: ${user.getFirstName()} ${user.getLastName()}</label>
+                                    <label>ID: ${user.getID()}</label>
+                                    <a href="GetOrders?client=${user.getID()}"><button type="button" class="btn">Show Customer Orders</button></a><br/>
+                                    <form method="post" action="RemoveUser">
+                                        <input name="clientId" hidden="true" value="${user.getID()}">
+                                        <button type="submit" class="btn">Remove Client</button>
+                                    </form>
+                                </div>
+                            </c:forEach>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </body>

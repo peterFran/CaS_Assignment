@@ -4,7 +4,6 @@
  */
 package servlets;
 
-import cart.Item;
 import cart.ShoppingCart;
 import dataAccess.ItemDAO;
 import dataAccess.UserDAO;
@@ -23,7 +22,7 @@ import user.User;
  *
  * @author petermeckiffe
  */
-public class AddToCart extends HttpServlet {
+public class RemoveItems extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -43,10 +42,10 @@ public class AddToCart extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AddToCart</title>");            
+            out.println("<title>Servlet RemoveItems</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet AddToCart at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet RemoveItems at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {            
@@ -83,26 +82,23 @@ public class AddToCart extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        
-        UserDAO userDao = new UserDAO();
         ItemDAO itemDao = new ItemDAO();
-        User user = (User) session.getAttribute("currentClient");
         String itemId = request.getParameter("itemId");
-        String quantityString = request.getParameter("quantity");
+        User client = (User) session.getAttribute("currentClient");
         
-        
+        String clientId = Integer.toString(client.getID());
         Map<String,ShoppingCart> carts = (Map<String,ShoppingCart>) session.getAttribute("shoppingCarts");
-        String userID = Integer.toString(user.getID());
-        ShoppingCart cart = carts.get(userID);
-        Item item = itemDao.getItem(Integer.parseInt(itemId));
-        cart.addItem(item, Integer.parseInt(quantityString));
-        carts.put(Integer.toString(user.getID()), cart);
+        ShoppingCart cart;
         
-        session.setAttribute("shoppingCarts", carts);
+        if(carts==null){
+            carts = new HashMap<String,ShoppingCart>();
+        }
+        if(carts.containsKey(clientId)){
+            carts.put(Integer.toString(client.getID()), new ShoppingCart(client.getID()));
+        } 
+        
+        session.setAttribute("shoppingCarts", carts);                
         response.sendRedirect("Shopping");
-        
-        
-        
     }
 
     /**

@@ -85,10 +85,13 @@ public class PlaceOrder extends HttpServlet {
         Map<String, ShoppingCart> mp= (Map<String, ShoppingCart>)session.getAttribute("shoppingCarts");
         User currentClient = (User) session.getAttribute("currentClient");
         ShoppingCart cart = mp.get(Integer.toString(currentClient.getID()));
-       
+        
         Order order = orderDao.placeOrder(cart);
         if(order!=null){
+            
             mp.remove(Integer.toString(currentClient.getID()));
+            session.removeAttribute("currentClient");
+            request.setAttribute("order", order);
             request.getRequestDispatcher(
             "WEB-INF/newOrder.jsp").forward(request,response);
         } else {

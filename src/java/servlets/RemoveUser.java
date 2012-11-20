@@ -10,6 +10,7 @@ import dataAccess.ItemDAO;
 import dataAccess.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.ServletException;
@@ -17,13 +18,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import user.User;
 
 /**
  *
  * @author petermeckiffe
  */
-public class AddToCart extends HttpServlet {
+public class RemoveUser extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -43,10 +43,10 @@ public class AddToCart extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AddToCart</title>");            
+            out.println("<title>Servlet RemoveUser</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet AddToCart at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet RemoveUser at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {            
@@ -82,27 +82,18 @@ public class AddToCart extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         HttpSession session = request.getSession();
-        
         UserDAO userDao = new UserDAO();
-        ItemDAO itemDao = new ItemDAO();
-        User user = (User) session.getAttribute("currentClient");
-        String itemId = request.getParameter("itemId");
-        String quantityString = request.getParameter("quantity");
-        
-        
+        String clientId = request.getParameter("clientId");
         Map<String,ShoppingCart> carts = (Map<String,ShoppingCart>) session.getAttribute("shoppingCarts");
-        String userID = Integer.toString(user.getID());
-        ShoppingCart cart = carts.get(userID);
-        Item item = itemDao.getItem(Integer.parseInt(itemId));
-        cart.addItem(item, Integer.parseInt(quantityString));
-        carts.put(Integer.toString(user.getID()), cart);
         
+        if(carts!=null && carts.containsKey(clientId)){
+            carts.remove(clientId);
+        } 
         session.setAttribute("shoppingCarts", carts);
-        response.sendRedirect("Shopping");
-        
-        
-        
+        userDao.removeUser(Integer.parseInt(clientId));
+        response.sendRedirect("ListClients");
     }
 
     /**

@@ -126,9 +126,10 @@ public class ItemDAO extends DAO{
         Statement state = null;
         try {
             state = this.conn.createStatement();
-            int code = state.executeUpdate("update Cas_Items.items set price=" + item.getPrice() + "where item_id='" + item.getID() + "')");
+            int code = state.executeUpdate("update Cas_Items.items set price='" + item.getPrice() + "' where item_id='" + item.getID() + "'");
             return code != -1;
         } catch (SQLException a) {
+            System.out.println(a);
             return false;
         } finally{
             this.closeConns(state, null, null);
