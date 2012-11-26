@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import user.User;
 
 /**
  *
@@ -15,16 +16,16 @@ import java.util.List;
  */
 public class Order {
     private int orderID;
-    private int userID;
+    private User user;
     private List<CustomerItem> items;
     private Date datePlaced;
     private int itemHash;
     private BigDecimal price;
     private Timestamp stamp;
-    public Order(int orderID, int userID, List<CustomerItem> items, int hash, Timestamp stamp, BigDecimal price){
+    public Order(int orderID, User user, List<CustomerItem> items, int hash, Timestamp stamp, BigDecimal price){
         this.orderID = orderID;
         this.items = items;
-        this.userID = userID;
+        this.user = user;
         this.stamp = stamp;
         this.price = price;
         this.itemHash = hash;
@@ -36,7 +37,7 @@ public class Order {
         return this.orderID;
     }
     public int getUserID(){
-        return this.userID;
+        return this.user.getID();
     }
     public Timestamp getTimestamp(){
         return this.stamp;
@@ -50,9 +51,12 @@ public class Order {
     public BigDecimal getPrice(){
         return this.price;
     }
+    public String getCustomerName(){
+        return this.user.getFirstName()+" "+this.user.getLastName();
+    }
     @Override
     public String toString(){
-        String returnString = String.format("--- Order ---\nOrder ID: %d\nCustomer ID: %d\nTotal price: %d\nDate Placed: %s\n- Item list -\n", this.orderID,this.userID,this.price,this.datePlaced.toString());
+        String returnString = String.format("--- Order ---\nOrder ID: %d\nCustomer ID: %d\nTotal price: %d\nDate Placed: %s\n- Item list -\n", this.orderID,this.user.getID(),this.price,this.datePlaced.toString());
         for(Item i:this.items){
             returnString += i.toString()+"\n";
         }

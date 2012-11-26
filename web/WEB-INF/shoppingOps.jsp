@@ -22,10 +22,7 @@
             <div class="navbar-inner tabbable">
                 <a class="brand" href="index.jsp">CaS Assignment</a>
                 <ul class="nav nav-tabs">
-                    <li><a href="ListClients" data-toggle="tab">Users</a></li>
-                    <li class="active"><a href="Shopping" data-toggle="tab">Shopping</a></li>
-                    <li><a href="GetOrders" data-toggle="tab">Orders</a></li>
-                    <li><a href="ListItems" data-toggle="tab">Items</a></li>
+                    <%@include file="/WEB-INF/jspf/menuBar.jspf"%>
                 </ul>
                 <form class="navbar-form pull-right" method="post" action="Shopping">
                     <select id="cartSelect" name="client">
@@ -52,11 +49,11 @@
                                 <ul class="nav nav-list">
                                     <li class="nav-header">Cart</li>
                                     <c:forEach items="${cart.getItemList()}" var="item">
-                                        <label>ID: ${item.getID()}</label>
-                                        <label>Name: ${item.getName()}</label>
-                                        <label>Quantity: ${item.getQuantity()}</label>
-                                        <label>Price: £${item.getPrice()}</label>
-                                        <br/>
+                                        <div class="well">
+                                            <label>Item: ${item.getName()}</label>
+                                            <label>Quantity: ${item.getQuantity()}</label>
+                                            <label>Price: £${item.getPrice()}</label>
+                                        </div>
                                     </c:forEach>
                                     <label>Subtotal: £${cart.getTotalCost()}</label><br/>
 
@@ -88,7 +85,7 @@
                                     </c:forEach>
                                 </fieldset>
 
-                                
+
                             </div>
 
                         </div><!--/span-->

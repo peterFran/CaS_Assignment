@@ -23,10 +23,7 @@
             <div class="navbar-inner tabbable">
                 <a class="brand" href="index.jsp">CaS Assignment</a>
                 <ul class="nav nav-tabs">
-                    <li><a href="ListClients" data-toggle="tab">Users</a></li>
-                    <li><a href="Shopping" data-toggle="tab">Shopping</a></li>
-                    <li><a href="GetOrders" data-toggle="tab">Orders</a></li>
-                    <li><a href="ListItems" data-toggle="tab">Items</a></li>
+                    <%@include file="/WEB-INF/jspf/menuBar.jspf"%>
                 </ul>
             </div>
         </div>

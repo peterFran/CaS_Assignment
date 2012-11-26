@@ -23,10 +23,7 @@
             <div class="navbar-inner tabbable">
                 <a class="brand" href="index.jsp">CaS Assignment</a>
                 <ul class="nav nav-tabs">
-                    <li><a href="ListClients" data-toggle="tab">Users</a></li>
-                    <li><a href="Shopping" data-toggle="tab">Shopping</a></li>
-                    <li class="active"><a href="GetOrders" data-toggle="tab">Orders</a></li>
-                    <li><a href="ListItems" data-toggle="tab">Items</a></li>
+                    <%@include file="/WEB-INF/jspf/menuBar.jspf"%>
                 </ul>
                 <form class="navbar-form pull-right" method="get" action="GetOrders">
                     <select id="cartSelect" name="client">
@@ -40,19 +37,20 @@
         </div>
         <div class="container">
             <div class="hero-unit">
+                <legend>Orders</legend>
                 <c:forEach items="${orders}" var="order">
-                    <label>Order ID: ${order.getOrderID()}</label>
-                    <label>Order cost: ${order.getPrice()}</label>
-                    <label>Client: ${order.getUserID()}</label>
-                    <label>Items: </label>
-
-                    <c:forEach items="${order.getItems()}" var="item">
-                        <div class="well">
-                            <label>Item name: ${item.getName()}</label>
-                            <label>Quantity: ${item.getQuantity()}</label>
-                            <label>Cost: ${item.getPrice()}</label>
-                        </div>
-                    </c:forEach>
+                    <div class="well">
+                        <label>Customer Name: ${order.getCustomerName()}</label>
+                        <label>Order ID: ${order.getOrderID()}</label>
+                        <label>Order cost: ${order.getPrice()}</label>
+                        <c:forEach items="${order.getItems()}" var="item">
+                            <div class="well">
+                                <label>Item name: ${item.getName()}</label>
+                                <label>Quantity: ${item.getQuantity()}</label>
+                                <label>Cost: ${item.getPrice()}</label>
+                            </div>
+                        </c:forEach>
+                    </div>
                 </c:forEach>
             </div>
         </div>

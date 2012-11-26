@@ -23,10 +23,7 @@
             <div class="navbar-inner tabbable">
                 <a class="brand" href="index.jsp">CaS Assignment</a>
                 <ul class="nav nav-tabs">
-                    <li><a href="ListClients" data-toggle="tab">Users</a></li>
-                    <li><a href="Shopping" data-toggle="tab">Shopping</a></li>
-                    <li><a href="GetOrders" data-toggle="tab">Orders</a></li>
-                    <li class="active"><a href="ListItems" data-toggle="tab">Items</a></li>
+                    <%@include file="/WEB-INF/jspf/menuBar.jspf"%>
                 </ul>
             </div>
         </div>
@@ -56,6 +53,12 @@
 	                        	<input hidden="true" name="itemId" value="${item.getID()}">
 		                        <span>Change price: £<input name="price" type="number" step="0.01" placeholder="Price"></span>
 		                        <button type="submit" class="btn">Submit</button>
+	                        </fieldset>
+                        </form>
+                                        <form method="post" action="DeleteItem">
+	                        <fieldset>
+	                        	<input hidden="true" name="itemId" value="${item.getID()}">
+		                        <button type="submit" class="btn">Delete Item</button>
 	                        </fieldset>
                         </form>
                     </div>

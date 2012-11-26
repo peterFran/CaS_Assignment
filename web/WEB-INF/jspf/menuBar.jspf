@@ -1,0 +1,7 @@
+<%-- any content can be specified here e.g.: --%>
+<%@ page pageEncoding="UTF-8" %>
+<li><a href="ListClients" data-toggle="tab">Users</a></li>
+<li><a href="Shopping" data-toggle="tab">Shopping</a></li>
+<li><a href="GetOrders" data-toggle="tab">Orders</a></li>
+<li><a href="ListItems" data-toggle="tab">Items</a></li>
+<li><a href="ListCarts" data-toggle="tab">Carts</a></li>

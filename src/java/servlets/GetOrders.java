@@ -73,10 +73,8 @@ public class GetOrders extends HttpServlet {
             int userID = Integer.parseInt(id);
             orders = dao.retrieveCustomerOrders(userID);
             
-
         } else{
             orders = dao.retrieveCustomerOrders();
-            System.out.println(orders.get(0).getOrderID());
         }
         request.setAttribute("orders", orders);
         request.setAttribute("clients", userDao.getUsers());

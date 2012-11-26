@@ -48,6 +48,25 @@ public class ItemDAO extends DAO{
             this.closeConns(state, null, null);
         }
     }
+    public List<Item> getAllValidItems(){
+        List<Item> items = new ArrayList<Item>();
+        Statement state = null;
+        ResultSet rs = null;
+        try {
+            state = this.conn.createStatement();
+            rs = state.executeQuery("SELECT item_id from CaS_Items.items where valid = TRUE order by item_id");
+            while (rs.next()) {
+                items.add(this.getItem(rs.getInt("item_id")));
+            }
+            return items;
+        } catch (SQLException a) {
+            
+            System.out.println(a.toString());
+            return null;
+        } finally{
+            this.closeConns(state, rs, null);
+        }
+    }
 
     public List<Item> getAllItems() {
         List<Item> items = new ArrayList<Item>();
@@ -127,6 +146,20 @@ public class ItemDAO extends DAO{
         try {
             state = this.conn.createStatement();
             int code = state.executeUpdate("update Cas_Items.items set price='" + item.getPrice() + "' where item_id='" + item.getID() + "'");
+            return code != -1;
+        } catch (SQLException a) {
+            System.out.println(a);
+            return false;
+        } finally{
+            this.closeConns(state, null, null);
+        }
+    }
+    
+    public boolean removeItem(int itemId) {
+        Statement state = null;
+        try {
+            state = this.conn.createStatement();
+            int code = state.executeUpdate("update Cas_Items.items set valid=FALSE where item_id='" + itemId + "'");
             return code != -1;
         } catch (SQLException a) {
             System.out.println(a);

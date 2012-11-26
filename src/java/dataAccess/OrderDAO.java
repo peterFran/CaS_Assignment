@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.sql.Timestamp;
 import java.util.Iterator;
 import java.util.List;
+import user.User;
 
 /**
  *
@@ -23,10 +24,12 @@ import java.util.List;
 public class OrderDAO extends DAO {
 
     private ItemDAO itemDao;
+    private UserDAO userDao;
 
     public OrderDAO() {
         super("CaS_Orders");
         this.itemDao = new ItemDAO();
+        this.userDao = new UserDAO();
     }
 
     public Order retrieveOrder(int orderID) {
@@ -50,7 +53,11 @@ public class OrderDAO extends DAO {
 //                System.out.println("They match");
 //            }
             if(rs.next()){
-                return new Order(orderID, rs.getInt("user_id"), items, rs.getInt("item_hash"), rs.getTimestamp("date_created"), rs.getBigDecimal("total_cost"));
+                User user = this.userDao.getUser(rs.getInt("user_id"));
+                if(user==null){
+                    user = new User(rs.getInt("user_id"),"-- User has been removed from system --","");
+                }
+                return new Order(orderID, user, items, rs.getInt("item_hash"), rs.getTimestamp("date_created"), rs.getBigDecimal("total_cost"));
             } else{
                 return null;
                       
@@ -165,7 +172,7 @@ public class OrderDAO extends DAO {
                 state.executeUpdate("Insert into Cas_Orders.items_in_orders (order_id, item_id, quantity) values('" + orderID + "','" + item.getID() + "','"+item.getQuantity()+"')");
             }
             
-            return new Order(orderID, cart.getUserID(), cart.getItemList(), hash, cart.getTimeCreated(), cart.getTotalCost());
+            return new Order(orderID, cart.getUser(), cart.getItemList(), hash, cart.getTimeCreated(), cart.getTotalCost());
             //TODO CHANGE
 
         } catch (SQLException a) {

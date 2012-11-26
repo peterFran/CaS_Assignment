@@ -91,7 +91,7 @@ public class ClearCart extends HttpServlet {
             carts = new HashMap<String,ShoppingCart>();
         }
         if(carts.containsKey(clientId)){
-            carts.put(Integer.toString(client.getID()), new ShoppingCart(client.getID()));
+            carts.put(Integer.toString(client.getID()), new ShoppingCart(client));
         } 
         
         session.setAttribute("shoppingCarts", carts);                

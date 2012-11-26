@@ -65,7 +65,7 @@ public class ListItems extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         ItemDAO i = new ItemDAO();
-        List<Item> items = i.getAllItems();
+        List<Item> items = i.getAllValidItems();
         request.setAttribute("items", items);
         
         request.getRequestDispatcher(

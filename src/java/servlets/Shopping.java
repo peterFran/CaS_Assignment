@@ -73,7 +73,7 @@ public class Shopping extends HttpServlet {
             Map<String,ShoppingCart> mp = (Map<String,ShoppingCart>) session.getAttribute("shoppingCarts");
             request.setAttribute("cart", (ShoppingCart)mp.get(Integer.toString(client.getID())));
             System.out.println(mp.get(Integer.toString(client.getID())));
-            request.setAttribute("items", new ItemDAO().getAllItems());
+            request.setAttribute("items", new ItemDAO().getAllValidItems());
             
         }
         request.setAttribute("clients", new UserDAO().getUsers());
@@ -107,7 +107,7 @@ public class Shopping extends HttpServlet {
             carts = new HashMap<String,ShoppingCart>();
         }
         if(!carts.containsKey(clientId)){
-            carts.put(clientId, new ShoppingCart(Integer.parseInt(clientId)));
+            carts.put(clientId, new ShoppingCart(user));
         } 
         
         session.setAttribute("shoppingCarts", carts);                

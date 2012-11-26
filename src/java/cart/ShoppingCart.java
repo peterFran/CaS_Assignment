@@ -10,6 +10,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import user.User;
 
 /**
  *
@@ -17,22 +18,31 @@ import java.util.List;
  */
 public class ShoppingCart implements Serializable{
     private List<CustomerItem> items;
-    private int userID;
+    private User user;
     private Date dateCreated;
     private boolean checked=false;
     private Timestamp stamp;
-    public ShoppingCart(int userID){
+    public ShoppingCart(User user){
         this.dateCreated = new Date();
         this.stamp = new Timestamp(this.dateCreated.getTime());
-        this.userID = userID;
-        items = new ArrayList<CustomerItem>();
+        this.user = user;
+        this.items = new ArrayList<CustomerItem>();
+    }
+    public User getUser(){
+        return this.user;
     }
     public int getUserID(){
-        return this.userID;
+        return this.user.getID();
     }
-    public ShoppingCart(int userID, List<CustomerItem> items, Date date){
+    public String getUserName(){
+        return this.user.getFirstName()+" "+this.user.getLastName();
+    }
+    public List<CustomerItem> getItems(){
+        return this.items;
+    }
+    public ShoppingCart(User user, List<CustomerItem> items, Date date){
         this.dateCreated = date;
-        this.userID = userID;
+        this.user = user;
         this.items = items;
         this.checked = true;
     }
