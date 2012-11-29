@@ -34,7 +34,7 @@
                 <legend>Congratulations on your new order!</legend>
 
                 <label>Order ID: ${order.getOrderID()}</label>
-                <label>Order cost: ${order.getPrice()}</label>
+                <label>Order cost: $${order.getPrice()}</label>
                 <label>Client: ${order.getUserID()}</label>
                 <label>Created on ${order.getTimestamp()}</label>
                 <label>Items: </label>
@@ -43,7 +43,7 @@
                     <div class="well">
                         <label>Item name: ${item.getName()}</label>
                         <label>Quantity: ${item.getQuantity()}</label>
-                        <label>Cost: ${item.getPrice()}</label>
+                        <label>Cost: $${item.getPrice()}</label>
                     </div>
                 </c:forEach>
             </div>

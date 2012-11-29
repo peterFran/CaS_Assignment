@@ -12,9 +12,11 @@ import java.math.BigDecimal;
  *
  * @author petermeckiffe
  */
+// Represents item in temporary memory
 public class Item implements Serializable{
     private int ID;
     private String name;
+    // Must use BigDecimal in order to represent currency correctly
     private BigDecimal price;
 
     public Item(int ID, String name, BigDecimal price) {

@@ -64,6 +64,7 @@ public class ListClients extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Get all clients from DB, set a request attribute, dispatch request to userOps page
         UserDAO i = new UserDAO();
         List<User> users = i.getUsers();
         request.setAttribute("users", users);

@@ -17,7 +17,8 @@ import javax.sql.DataSource;
  *
  * @author petermeckiffe
  */
-public class DAO {
+// Class must be extended, handles DB connection and connection closures. 
+public abstract class DAO {
     protected Connection conn = null;
     public DAO(String dbName){
         try {

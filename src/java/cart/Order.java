@@ -14,9 +14,11 @@ import user.User;
  *
  * @author petermeckiffe
  */
+// Represents an order AFTER it has been placed to the database
 public class Order {
     private int orderID;
     private User user;
+    // List is customer items
     private List<CustomerItem> items;
     private Date datePlaced;
     private int itemHash;

@@ -75,6 +75,7 @@ public class AddClient extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Creates a new client on the database, then redirects to ListClients servlet
         UserDAO userDao = new UserDAO();
         String firstname = request.getParameter("first");
         String lastname = request.getParameter("last");

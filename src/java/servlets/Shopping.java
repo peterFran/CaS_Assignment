@@ -67,6 +67,9 @@ public class Shopping extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Gets session & current client
+        // Sets a request attribute to the clients cart and lists all items in another
+        // dispatches request to shoppingOps page
         HttpSession session = request.getSession();
         User client = (User) session.getAttribute("currentClient");
         if(client!=null){
@@ -96,7 +99,7 @@ public class Shopping extends HttpServlet {
         UserDAO userDao = new UserDAO();
         HttpSession session = request.getSession();
         
-        String clientId = request.getParameter("client");
+        String clientId = request.getParameter("clientId");
         User user = userDao.getUser(Integer.parseInt(clientId));
         session.setAttribute("currentClient", user);
         

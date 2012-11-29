@@ -76,6 +76,7 @@ public class AddItem extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Creates new item on the database then redirects to ListItems servlet
         String name = request.getParameter("name");
         BigDecimal price = BigDecimal.valueOf(Double.parseDouble(request.getParameter("price")));
         ItemDAO i = new ItemDAO();

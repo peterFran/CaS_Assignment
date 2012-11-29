@@ -42,12 +42,12 @@
                     <div class="well">
                         <label>Customer Name: ${order.getCustomerName()}</label>
                         <label>Order ID: ${order.getOrderID()}</label>
-                        <label>Order cost: ${order.getPrice()}</label>
+                        <label>Order cost: $${order.getPrice()}</label>
                         <c:forEach items="${order.getItems()}" var="item">
                             <div class="well">
                                 <label>Item name: ${item.getName()}</label>
                                 <label>Quantity: ${item.getQuantity()}</label>
-                                <label>Cost: ${item.getPrice()}</label>
+                                <label>Cost: $${item.getPrice()}</label>
                             </div>
                         </c:forEach>
                     </div>

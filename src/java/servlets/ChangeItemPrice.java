@@ -77,13 +77,14 @@ public class ChangeItemPrice extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        // Get item from db, change its price, then commit it & redirect to ListItems servlet
         ItemDAO itemDao = new ItemDAO();
         String itemId = request.getParameter("itemId");
         BigDecimal price = new BigDecimal(request.getParameter("price"));
         Item item = itemDao.getItem(Integer.parseInt(itemId));
         item.setPrice(price);
-        System.out.println(itemDao.commitItem(item));
-        System.out.println(item);
+        itemDao.commitItem(item);
         response.sendRedirect("ListItems");
     }
 

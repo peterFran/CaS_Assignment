@@ -80,12 +80,13 @@ public class ClearCart extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        // Find clients cart, if it exists, create a new empty cart and replace it.
         HttpSession session = request.getSession();
         
         User client = (User) session.getAttribute("currentClient");
         String clientId = Integer.toString(client.getID());
         Map<String,ShoppingCart> carts = (Map<String,ShoppingCart>) session.getAttribute("shoppingCarts");
-        ShoppingCart cart;
         
         if(carts==null){
             carts = new HashMap<String,ShoppingCart>();
@@ -94,7 +95,8 @@ public class ClearCart extends HttpServlet {
             carts.put(Integer.toString(client.getID()), new ShoppingCart(client));
         } 
         
-        session.setAttribute("shoppingCarts", carts);                
+        session.setAttribute("shoppingCarts", carts);      
+        // Redirect to Shopping servlet
         response.sendRedirect("Shopping");
     }
 

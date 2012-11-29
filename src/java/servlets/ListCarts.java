@@ -4,8 +4,10 @@
  */
 package servlets;
 
+import cart.ShoppingCart;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -60,6 +62,21 @@ public class ListCarts extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        Map<String, ShoppingCart> mp = (Map<String, ShoppingCart>) session.getAttribute("shoppingCarts");
+        
+        if (mp!=null){
+            for(String key:mp.keySet()){
+                ShoppingCart cart = mp.get(key);
+                if(cart.getItemList().isEmpty()){
+                    mp.remove(key);
+                }
+            }
+            
+        }
+        session.setAttribute("shoppingCarts", mp);
+        session.removeAttribute("currentClient");
+        // dispatch request to showCarts page
         request.getRequestDispatcher(
             "WEB-INF/showCarts.jsp").forward(request,response);
     }

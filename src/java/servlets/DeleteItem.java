@@ -75,6 +75,8 @@ public class DeleteItem extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        // Get DAO and call remove item for this item, then redirect to ListItems
         int itemId = Integer.parseInt(request.getParameter("itemId"));
         ItemDAO itemDao =new ItemDAO();
         itemDao.removeItem(itemId);

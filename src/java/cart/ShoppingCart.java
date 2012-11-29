@@ -16,17 +16,26 @@ import user.User;
  *
  * @author petermeckiffe
  */
+// Represents users order from the time of creation
 public class ShoppingCart implements Serializable{
     private List<CustomerItem> items;
     private User user;
     private Date dateCreated;
     private boolean checked=false;
     private Timestamp stamp;
+    // Creates a new empty shopping cart
     public ShoppingCart(User user){
         this.dateCreated = new Date();
         this.stamp = new Timestamp(this.dateCreated.getTime());
         this.user = user;
         this.items = new ArrayList<CustomerItem>();
+    }
+    // Creates a cart
+    public ShoppingCart(User user, List<CustomerItem> items, Date date){
+        this.dateCreated = date;
+        this.user = user;
+        this.items = items;
+        this.checked = true;
     }
     public User getUser(){
         return this.user;
@@ -36,15 +45,6 @@ public class ShoppingCart implements Serializable{
     }
     public String getUserName(){
         return this.user.getFirstName()+" "+this.user.getLastName();
-    }
-    public List<CustomerItem> getItems(){
-        return this.items;
-    }
-    public ShoppingCart(User user, List<CustomerItem> items, Date date){
-        this.dateCreated = date;
-        this.user = user;
-        this.items = items;
-        this.checked = true;
     }
     public int[] getIDs(){
         int[] itemIds = new int[this.items.size()];
@@ -59,13 +59,16 @@ public class ShoppingCart implements Serializable{
         return this.checked;
     }
     public void addItem(Item item, int quantity){
-        System.out.println("got");
         CustomerItem custItem = this.getCustomerItem(item.getID());
         
         if(custItem == null){
             this.items.add(new CustomerItem(item, quantity));
         }else{
+            if (quantity==0){
+                this.removeItem(item);
+            }else{
             custItem.setQuantity(quantity);
+            }
         }
     }
     public void addItem(Item item){
@@ -76,12 +79,27 @@ public class ShoppingCart implements Serializable{
             custItem.increment();
         }
     }
+    //// Section dealing with Item quantity control
     public void decrementItem(Item item){
         CustomerItem custItem = this.getCustomerItem(item.getID());
         if(custItem != null){
             custItem.decrement();
         }
     }
+    public void incrementItem(Item item){
+        CustomerItem custItem = this.getCustomerItem(item.getID());
+        if(custItem != null){
+            custItem.increment();
+        }
+    }
+    public int getItemQuantity(Item item){
+        CustomerItem custItem = this.getCustomerItem(item.getID());
+        if(custItem != null){
+            return custItem.getQuantity();
+        }
+        return 0;
+    }
+    ////
     private CustomerItem getCustomerItem(int itemID){
         for(CustomerItem custItem:this.items){
             if(custItem.getID()==itemID){

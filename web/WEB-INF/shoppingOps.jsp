@@ -25,7 +25,7 @@
                     <%@include file="/WEB-INF/jspf/menuBar.jspf"%>
                 </ul>
                 <form class="navbar-form pull-right" method="post" action="Shopping">
-                    <select id="cartSelect" name="client">
+                    <select id="cartSelect" name="clientId">
                         <c:forEach items="${clients}" var="cl">
                             <option value="${cl.getID()}">${cl.getFirstName()} ${cl.getLastName()}</option>
                         </c:forEach>
@@ -47,21 +47,24 @@
                         <div class="span3">
                             <div class="well sidebar-nav">
                                 <ul class="nav nav-list">
-                                    <li class="nav-header">Cart</li>
+                                    <li class="nav-header"><h4>Cart</h4></li>
                                     <c:forEach items="${cart.getItemList()}" var="item">
                                         <div class="well">
                                             <label>Item: ${item.getName()}</label>
                                             <label>Quantity: ${item.getQuantity()}</label>
-                                            <label>Price: £${item.getPrice()}</label>
+                                            <label>Price: $${item.getPrice()}</label>
                                         </div>
+                                        
                                     </c:forEach>
-                                    <label>Subtotal: £${cart.getTotalCost()}</label><br/>
+                                    <label>Subtotal: $${cart.getTotalCost()}</label><br/>
 
                                 </ul>
                                 <form method="post" action="PlaceOrder">
+                                    <input hidden="true" name="clientId" value="${currentClient.getID()}">
                                     <button type="submit" class="btn">Check Out Order</button>
                                 </form>
                                 <form method="post" action="ClearCart">
+                                    <input hidden="true" name="clientId" value="${currentClient.getID()}">
                                     <button type="submit" class="btn">Clear Cart</button>
                                 </form>
                             </div><!--/.well -->
@@ -69,16 +72,18 @@
                         <div class="span9">
                             <div class="hero-unit">
                                 <fieldset>
-                                    <legend>${currentClient.getFirstName()} ${currentClient.getLastName()}'s cart</legend>
+                                    <legend>Add Items : ${currentClient.getFirstName()} ${currentClient.getLastName()}</legend>
                                     <c:forEach items="${items}" var="item">
                                         <form action="AddToCart" method="post">
                                             <div class="well">
                                                 <label><h4>${item.getName()}</h4></label>
                                                 <label>ID: ${item.getID()}</label>
-                                                <label>Price: £${item.getPrice()}</label>
+                                                <label>Price: $${item.getPrice()}</label>
                                                 <input hidden="true" name="itemId" value="${item.getID()}">
                                                 <input hidden="true" name="userId" value="${currentClient.getID()}">
                                                 <input type="number" name="quantity" placeholder="Quantity" min="1"><br/>
+                                                <input type="submit" class="btn" name="inc" value="+1">
+                                                <input type="submit" class="btn" name="dec" value="-1">
                                                 <button type="submit" class="btn">Update</button>
                                             </div>
                                         </form>

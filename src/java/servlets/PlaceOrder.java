@@ -80,16 +80,18 @@ public class PlaceOrder extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Get current clients cart, if exists commit to DB and dispatch to newOrder page
         OrderDAO orderDao = new OrderDAO();
         HttpSession session = request.getSession();
         Map<String, ShoppingCart> mp= (Map<String, ShoppingCart>)session.getAttribute("shoppingCarts");
-        User currentClient = (User) session.getAttribute("currentClient");
-        ShoppingCart cart = mp.get(Integer.toString(currentClient.getID()));
+        String clientId = (String) request.getParameter("clientId");
+        System.out.println(clientId);
+        ShoppingCart cart = mp.get(clientId);
         
         Order order = orderDao.placeOrder(cart);
         if(order!=null){
             
-            mp.remove(Integer.toString(currentClient.getID()));
+            mp.remove(clientId);
             session.removeAttribute("currentClient");
             request.setAttribute("order", order);
             request.getRequestDispatcher(

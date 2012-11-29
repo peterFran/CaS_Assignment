@@ -82,7 +82,7 @@ public class RemoveUser extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        // Gets user ID from form, calls UserDAO removeUser method, redirects to ListClients servlet
         HttpSession session = request.getSession();
         UserDAO userDao = new UserDAO();
         String clientId = request.getParameter("clientId");

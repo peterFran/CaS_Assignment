@@ -64,6 +64,8 @@ public class ListItems extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        // Get all items from db, set attribute, dispatch to itemOps.jsp
         ItemDAO i = new ItemDAO();
         List<Item> items = i.getAllValidItems();
         request.setAttribute("items", items);

@@ -65,6 +65,7 @@ public class GetOrders extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // If client ID is passed, get all orders for client. If not, get all orders
         String id = request.getParameter("client");
         OrderDAO dao = new OrderDAO();
         UserDAO userDao = new UserDAO();
@@ -76,6 +77,7 @@ public class GetOrders extends HttpServlet {
         } else{
             orders = dao.retrieveCustomerOrders();
         }
+        // Set request attributes and dispatch request to orderOps page
         request.setAttribute("orders", orders);
         request.setAttribute("clients", userDao.getUsers());
         request.getRequestDispatcher(

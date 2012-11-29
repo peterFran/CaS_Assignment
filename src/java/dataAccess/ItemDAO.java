@@ -34,7 +34,7 @@ public class ItemDAO extends DAO{
                 return this.getItem(itemID);
             }
 
-            int error = state.executeUpdate("Insert into Cas_Items.items (name,price) values('" + name + "','" + price + "')");
+            int error = state.executeUpdate("Insert into Cas_Items.items (name,price,valid) values('" + name + "','" + price + "',TRUE)");
             if (error != -1) {
                 itemID = this.getIDWithName(name);
                 return new Item(itemID, name, price);

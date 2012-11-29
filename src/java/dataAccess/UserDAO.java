@@ -16,11 +16,13 @@ import user.User;
  *
  * @author petermeckiffe
  */
+// Acts as connection bean for CaS_Users database
 public class UserDAO extends DAO{
 
     public UserDAO() {
         super("CaS_Users");
     }
+    // Creates a new user
     public User createUser(String firstName, String lastName){
         Statement state;
         ResultSet rs;
@@ -35,6 +37,8 @@ public class UserDAO extends DAO{
             return null;
         }
     }
+    
+    // Retrieves an User object with an ID
     public User getUser(int ID) {
         Statement state = null;
         ResultSet rs = null;
@@ -52,6 +56,8 @@ public class UserDAO extends DAO{
             this.closeConns(state, rs, null);
         }
     }
+    
+    // Deletes an User from system
     public boolean removeUser(int ID) {
         Statement state = null;
         try {
@@ -65,6 +71,8 @@ public class UserDAO extends DAO{
             this.closeConns(state, null, null);
         }
     }
+    
+    // Returns a User object if present on system with name
     public User getUser(String firstname, String lastname) {
         Statement state =null;
         ResultSet rs = null;
@@ -81,6 +89,8 @@ public class UserDAO extends DAO{
             this.closeConns(state, rs, null);
         }
     }
+    
+    // Returns a List object of all users
     public List<User> getUsers() {
         List<User> users = new ArrayList<User>();
         Statement state = null;

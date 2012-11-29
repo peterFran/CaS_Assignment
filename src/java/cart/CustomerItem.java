@@ -8,6 +8,7 @@ package cart;
  *
  * @author petermeckiffe
  */
+// Extension of Item object, which allows for quantity
 public class CustomerItem extends Item{
     private int quantity;
     public CustomerItem(Item item){
